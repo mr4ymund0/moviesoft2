@@ -27,7 +27,26 @@ def delete(id):
 	database.remove(mov_delete[0])
 	return jsonify(database)
 
+# @app.route('/movies/<int:id>', methods = ['PUT'])
+# def update(id):
+# 	if request.method == 'POST':
+# 		mov_update = list(filter(lambda n: n['id'] == id, database))
+# 		mov_update[0]['name'] = request.form['name']
+# 		mov_update[0]['year'] = request.form['year']
+# 		mov_update[0]['director'] = request.form['director']
+# 		database.append(mov_update)
+# 	return jsonify(database)
 
+@app.route('/movies/<int:id>', methods=['PUT'])
+def editOne(id):
+	movUpd = [mov for mov in database if mov['id'] == id]
+	if request.form['name'] != "":
+		movUpd[0]['name'] = request.form['name']
+	if request.form['year'] != "":
+		movUpd[0]['year'] = request.form['year']
+	if request.form['director'] != "":
+		movUpd[0]['director'] = request.form['director']
+	return jsonify({'mov': movUpd[0]})
 
 if __name__ == "__main__":
 	app.run(debug = True)
